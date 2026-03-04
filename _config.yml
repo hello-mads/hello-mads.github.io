@@ -1,0 +1,25 @@
+title: Team Study Hub
+description: 기술 블로그와 스터디 모집을 위한 랜딩 사이트
+url: ""
+baseurl: ""
+markdown: kramdown
+highlighter: rouge
+permalink: /posts/:title/
+plugins: []
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+study_data: _data/study.yml
+
+author_box: true
+
+kramdown:
+  input: GFM
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false

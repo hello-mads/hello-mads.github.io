@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="API 포스트 썸네일">
+  <rect width="1200" height="675" fill="#effaf1"/>
+  <text x="80" y="260" fill="#205b31" font-size="84" font-family="sans-serif" font-weight="700">API Versioning</text>
+  <text x="80" y="350" fill="#2e6f40" font-size="42" font-family="sans-serif">Backward Compatibility in Practice</text>
+</svg>

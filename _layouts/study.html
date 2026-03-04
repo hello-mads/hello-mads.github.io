@@ -1,0 +1,140 @@
+---
+layout: default
+---
+{% assign season_data = nil %}
+{% if site.data.study.current and site.data.study.current.season_id == page.season_id %}
+  {% assign season_data = site.data.study.current %}
+{% endif %}
+{% if season_data == nil and site.data.study.past_seasons %}
+  {% for s in site.data.study.past_seasons %}
+    {% if s.season_id == page.season_id %}
+      {% assign season_data = s %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% assign d = season_data | default: page %}
+{% assign season_members = d.members %}
+
+<section class="hero">
+  <div class="container">
+    <p class="kicker">{{ d.season | default: 'Study Season' }}</p>
+    <h1>{{ d.title | default: page.title }}</h1>
+    <p class="hero-desc">{{ d.summary | default: page.summary }}</p>
+  </div>
+</section>
+
+<section class="study-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>스터디 상세</h2>
+      {% if d.is_open %}
+        <span class="badge-open">모집 중</span>
+      {% else %}
+        <span class="badge-close">운영 종료</span>
+      {% endif %}
+    </div>
+
+    {% if d.description %}
+      <div class="study-description rich-text">{{ d.description | markdownify }}</div>
+    {% endif %}
+
+    {% if d.curriculum %}
+      <div class="curriculum-box">
+        <h3>시즌 커리큘럼</h3>
+        <ul>
+          {% for item in d.curriculum %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if d.is_open %}
+      {% assign subject = '[스터디지원] 이름(필수)' %}
+      {% capture body %}1. 이름:
+2. 연락처:
+3. 현재 수준:
+4. 지원 동기:{% endcapture %}
+      <div class="apply-box">
+        <div class="apply-info">
+          <p class="apply-label">지원 안내</p>
+          {% if d.open_notice %}
+            <p class="open-text">{{ d.open_notice }}</p>
+          {% endif %}
+        </div>
+        {% if d.cta_url %}
+          <a class="cta-btn" href="{{ d.cta_url }}" aria-label="스터디 합류하기">합류하기 →</a>
+        {% elsif d.cta_email %}
+          <a class="cta-btn" href="mailto:{{ d.cta_email }}?subject={{ subject | url_encode }}&body={{ body | url_encode }}" aria-label="스터디 합류 메일 보내기">합류하기 →</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if season_members %}
+      <div class="member-section">
+        <div class="section-header season-header">
+          <h3>시즌 멤버</h3>
+        </div>
+        {% include member_grid.html members=season_members %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="posts-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>시즌 아카이브</h2>
+    </div>
+    {% assign related_posts = site.posts | where: 'season', page.season_id %}
+    {% if related_posts.size > 0 %}
+      <div class="post-grid">
+        {% for post in related_posts %}
+          {% assign author = site.data.authors[post.author] %}
+          <article class="post-card">
+            <a href="{{ post.url | relative_url }}" class="thumb-wrap">
+              <img src="{{ post.image | relative_url }}" alt="{{ post.title }} 썸네일" />
+            </a>
+            <div class="card-body">
+              <p class="card-tags">{{ post.categories | join: ' · ' }}</p>
+              <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+              <p class="card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+              {% if author %}
+                <p class="card-author">{{ author.name }} · {{ post.date | date: '%Y.%m.%d' }}</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty-archive">등록된 시즌 아카이브 포스트가 아직 없습니다.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="study-section archive-inline">
+  <div class="container">
+    <div class="section-header season-header">
+      <h3>다른 시즌 보기</h3>
+    </div>
+    <div class="season-grid">
+      {% if site.data.study.current and site.data.study.current.detail_url != page.url %}
+        <a class="season-card" href="{{ site.data.study.current.detail_url | relative_url }}">
+          <p class="season-meta">{{ site.data.study.current.season }}{% if site.data.study.current.is_open %} · 모집 중{% endif %}</p>
+          <h4>{{ site.data.study.current.title }}</h4>
+          <p class="season-period">{{ site.data.study.current.period }}</p>
+        </a>
+      {% endif %}
+      {% for season in site.data.study.past_seasons %}
+        {% if season.detail_url != page.url %}
+          <a class="season-card" href="{{ season.detail_url | relative_url }}">
+            <p class="season-meta">{{ season.season }} · {{ season.status }}</p>
+            <h4>{{ season.title }}</h4>
+            <p class="season-period">{{ season.period }}</p>
+            <p class="season-summary">{{ season.summary }}</p>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>

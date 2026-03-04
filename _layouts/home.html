@@ -1,0 +1,119 @@
+---
+layout: default
+---
+{% assign study = site.data.study %}
+{% assign current = study.current | default: study %}
+{% assign subject = '[스터디지원] 이름(필수)' %}
+{% capture body %}1. 이름:
+2. 연락처:
+3. 현재 수준:
+4. 지원 동기:{% endcapture %}
+<section class="hero">
+  <div class="container">
+    <p class="kicker">Study Team Blog</p>
+    <h1>{{ current.title }}</h1>
+    <p class="hero-desc">전문성 있는 기술 공유와 실전 중심 스터디를 통해 함께 성장합니다.</p>
+  </div>
+</section>
+
+<section id="study" class="study-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>스터디 모집 안내</h2>
+      {% if current.is_open %}
+        <span class="badge-open">모집 중</span>
+      {% else %}
+        <span class="badge-close">모집 마감</span>
+      {% endif %}
+    </div>
+
+    {% if current.description %}
+      <div class="study-description rich-text">{{ current.description | markdownify }}</div>
+    {% endif %}
+    {% if current.curriculum %}
+      <div class="curriculum-box">
+        <h3>시즌 커리큘럼</h3>
+        <ul>
+          {% for item in current.curriculum %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    {% if current.detail_url %}
+      <p class="study-detail-link-wrap">
+        <a class="study-detail-link" href="{{ current.detail_url | relative_url }}">시즌 상세 보기</a>
+      </p>
+    {% endif %}
+
+    {% if current.is_open %}
+      <div class="apply-box">
+        <div class="apply-info">
+          <p class="apply-label">지원 안내</p>
+          {% if current.open_notice %}
+            <p class="open-text">{{ current.open_notice }}</p>
+          {% endif %}
+        </div>
+        {% if current.cta_url %}
+          <a class="cta-btn" href="{{ current.cta_url }}" aria-label="스터디 합류하기">합류하기 →</a>
+        {% elsif current.cta_email %}
+          <a class="cta-btn" href="mailto:{{ current.cta_email }}?subject={{ subject | url_encode }}&body={{ body | url_encode }}" aria-label="스터디 합류 메일 보내기">합류하기 →</a>
+        {% endif %}
+      </div>
+    {% else %}
+      <p class="close-text">{{ current.closed_notice | default: '현재 모집이 마감되었습니다.' }}</p>
+      {% if current.members %}
+        <div class="member-section">
+          <div class="section-header season-header">
+            <h3>시즌 멤버</h3>
+          </div>
+          {% include member_grid.html members=current.members %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if study.past_seasons %}
+      <div class="season-archive">
+        <div class="section-header season-header">
+          <h3>이전 시즌 아카이브</h3>
+        </div>
+        <div class="season-grid">
+          {% for season in study.past_seasons %}
+            <a class="season-card" href="{{ season.detail_url | relative_url }}">
+              <p class="season-meta">{{ season.season }} · {{ season.status }}</p>
+              <h4>{{ season.title }}</h4>
+              <p class="season-period">{{ season.period }}</p>
+              <p class="season-summary">{{ season.summary }}</p>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section id="posts" class="posts-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>최신 포스트</h2>
+    </div>
+    <div class="post-grid">
+      {% for post in site.posts limit:3 %}
+        {% assign author = site.data.authors[post.author] %}
+        <article class="post-card">
+          <a href="{{ post.url | relative_url }}" class="thumb-wrap">
+            <img src="{{ post.image | relative_url }}" alt="{{ post.title }} 썸네일" />
+          </a>
+          <div class="card-body">
+            <p class="card-tags">{{ post.categories | join: ' · ' }}</p>
+            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+            <p class="card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+            {% if author %}
+              <p class="card-author">{{ author.name }} · {{ post.date | date: '%Y.%m.%d' }}</p>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

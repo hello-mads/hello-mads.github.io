@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="Frontend 포스트 썸네일">
+  <rect width="1200" height="675" fill="#eef5ff"/>
+  <text x="80" y="260" fill="#1d4675" font-size="84" font-family="sans-serif" font-weight="700">State Patterns</text>
+  <text x="80" y="350" fill="#356598" font-size="42" font-family="sans-serif">Frontend Architecture Notes</text>
+</svg>

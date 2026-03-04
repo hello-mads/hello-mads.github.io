@@ -1,0 +1,33 @@
+{% assign cols = include.members | size %}
+{% if cols > 4 %}{% assign cols = 4 %}{% endif %}
+<div class="member-grid" style="--member-cols: {{ cols }}">
+  {% for member in include.members %}
+    {% assign profile = site.data.authors[member.author_id] %}
+    {% assign member_name = member.name | default: profile.name %}
+    {% unless member_name %}{% continue %}{% endunless %}
+    {% assign member_bio = member.bio | default: profile.bio %}
+    {% assign member_img = member.profile_img | default: profile.profile_img %}
+    {% assign member_github = member.github | default: profile.social_links.github %}
+    {% if member_github %}
+      <a class="member-card member-card-link" href="{{ member_github }}" target="_blank" rel="noopener noreferrer">
+        {% if member_img %}
+          <img class="member-avatar" src="{{ member_img | relative_url }}" alt="{{ member_name }} 프로필 이미지" />
+        {% endif %}
+        <p class="member-name">{{ member_name }}</p>
+        {% if member_bio %}
+          <p class="member-bio">{{ member_bio }}</p>
+        {% endif %}
+      </a>
+    {% else %}
+      <article class="member-card">
+        {% if member_img %}
+          <img class="member-avatar" src="{{ member_img | relative_url }}" alt="{{ member_name }} 프로필 이미지" />
+        {% endif %}
+        <p class="member-name">{{ member_name }}</p>
+        {% if member_bio %}
+          <p class="member-bio">{{ member_bio }}</p>
+        {% endif %}
+      </article>
+    {% endif %}
+  {% endfor %}
+</div>

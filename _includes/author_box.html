@@ -1,0 +1,13 @@
+{% assign author = site.data.authors[include.author_id] %}
+{% if author %}
+<section class="author-box" aria-label="작성자 정보">
+  <img class="author-avatar" src="{{ author.profile_img | relative_url }}" alt="{{ author.name }} 프로필 이미지" />
+  <div>
+    <p class="author-name">{{ author.name }} · {{ author.role }}</p>
+    <p class="author-bio">{{ author.bio }}</p>
+    {% if author.social_links.github %}
+      <a class="author-link" href="{{ author.social_links.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+    {% endif %}
+  </div>
+</section>
+{% endif %}

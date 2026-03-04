@@ -1,0 +1,17 @@
+gunkim:
+  id: gunkim
+  name: 김건
+  role: Backend Engineer
+  bio: 안녕하세요
+  profile_img: https://avatars.githubusercontent.com/u/45007556?v=4
+  social_links:
+    github: https://github.com/gunkim
+
+yjlee:
+  id: wowddok99
+  name: wowddok99
+  role: Backend Engineer
+  bio: 안녕하세요
+  profile_img: https://avatars.githubusercontent.com/u/61944265?v=4
+  social_links:
+    github: https://github.com/yjlee
