@@ -8,92 +8,68 @@ layout: default
 2. 연락처:
 3. 현재 수준:
 4. 지원 동기:{% endcapture %}
-<section class="hero">
-  <div class="container">
-    <p class="kicker">Study Team Blog</p>
-    <h1>{{ current.title }}</h1>
-    <p class="hero-desc">전문성 있는 기술 공유와 실전 중심 스터디를 통해 함께 성장합니다.</p>
-  </div>
-</section>
 
-<section id="study" class="study-section">
-  <div class="container">
-    <div class="section-header">
-      <h2>스터디 모집 안내</h2>
-      {% if current.is_open %}
-        <span class="badge-open">모집 중</span>
-      {% else %}
-        <span class="badge-close">모집 마감</span>
-      {% endif %}
-    </div>
-
-    {% if current.description %}
-      <div class="study-description rich-text">{{ current.description | markdownify }}</div>
-    {% endif %}
-    {% if current.curriculum %}
-      <div class="curriculum-box">
-        <h3>시즌 커리큘럼</h3>
-        <ul>
-          {% for item in current.curriculum %}
-            <li>{{ item }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
-    {% if current.detail_url %}
-      <p class="study-detail-link-wrap">
-        <a class="study-detail-link" href="{{ current.detail_url | relative_url }}">시즌 상세 보기</a>
-      </p>
-    {% endif %}
-
-    {% if current.is_open %}
-      <div class="apply-box">
-        <div class="apply-info">
-          <p class="apply-label">지원 안내</p>
-          {% if current.open_notice %}
-            <p class="open-text">{{ current.open_notice }}</p>
-          {% endif %}
-        </div>
-        {% if current.cta_url %}
-          <a class="cta-btn" href="{{ current.cta_url }}" aria-label="스터디 합류하기">합류하기 →</a>
-        {% elsif current.cta_email %}
-          <a class="cta-btn" href="mailto:{{ current.cta_email }}?subject={{ subject | url_encode }}&body={{ body | url_encode }}" aria-label="스터디 합류 메일 보내기">합류하기 →</a>
+<article class="article-page">
+  <header class="article-header">
+    <div class="container--article">
+      <p class="article-category"><span class="category-sub">Study Team Blog</span></p>
+      <h1 class="article-title">{{ current.title }}</h1>
+      <p class="article-subtitle">전문성 있는 기술 공유와 실전 중심 스터디를 통해 함께 성장합니다.</p>
+      <div class="article-meta-row">
+        {% if current.is_open %}
+          <span class="status-dot status-dot--active"></span>
+          <span class="status-text status-text--active">모집 중</span>
+        {% else %}
+          <span class="status-dot"></span>
+          <span class="status-text">모집 마감</span>
+        {% endif %}
+        {% if current.method %}
+          <span class="meta-divider">·</span>
+          <span class="meta-label">{{ current.method }} 스터디</span>
         {% endif %}
       </div>
-    {% else %}
-      <p class="close-text">{{ current.closed_notice | default: '현재 모집이 마감되었습니다.' }}</p>
-      {% if current.members %}
-        <div class="member-section">
-          <div class="section-header season-header">
-            <h3>시즌 멤버</h3>
-          </div>
-          {% include member_grid.html members=current.members %}
-        </div>
-      {% endif %}
-    {% endif %}
+    </div>
+  </header>
 
-    {% if study.past_seasons %}
-      <div class="season-archive">
-        <div class="section-header season-header">
-          <h3>이전 시즌 아카이브</h3>
+  <div class="article-body">
+    <div class="container--article">
+
+      {% if current.description %}
+        <div class="study-description rich-text">{{ current.description | markdownify }}</div>
+      {% endif %}
+
+      {% if current.detail_url %}
+        <p class="study-detail-link-wrap">
+          <a class="study-detail-link" href="{{ current.detail_url | relative_url }}">시즌 상세 보기 →</a>
+        </p>
+      {% endif %}
+
+      {% if current.is_open %}
+        <div class="cta-block">
+          {% if current.cta_url %}
+            <a class="cta-btn" href="{{ current.cta_url }}" aria-label="스터디 합류하기">스터디 합류하기</a>
+          {% elsif current.cta_email %}
+            <a class="cta-btn" href="mailto:{{ current.cta_email }}?subject={{ subject | url_encode }}&body={{ body | url_encode }}" aria-label="스터디 합류 메일 보내기">스터디 합류하기</a>
+          {% endif %}
         </div>
-        <div class="season-grid">
-          {% for season in study.past_seasons %}
-            <a class="season-card" href="{{ season.detail_url | relative_url }}">
-              <p class="season-meta">{{ season.season }} · {{ season.status }}</p>
-              <h4>{{ season.title }}</h4>
-              <p class="season-period">{{ season.period }}</p>
-              <p class="season-summary">{{ season.summary }}</p>
-            </a>
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
+      {% else %}
+        <p class="close-text">{{ current.closed_notice | default: '현재 모집이 마감되었습니다.' }}</p>
+        {% if current.members %}
+          <div class="member-section">
+            <div class="section-header season-header">
+              <h3>시즌 멤버</h3>
+            </div>
+            {% include member_grid.html members=current.members %}
+          </div>
+        {% endif %}
+      {% endif %}
+
+    </div>
   </div>
-</section>
+</article>
 
 <section id="posts" class="posts-section">
-  <div class="container">
+  <div class="container--article">
     <div class="section-header">
       <h2>최신 포스트</h2>
     </div>
